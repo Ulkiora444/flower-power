@@ -1,0 +1,180 @@
+<section class="game-shell">
+  <header class="topbar" *ngIf="state as game">
+    <div class="brand">
+      <span>PowerFlower</span>
+    </div>
+
+    <div class="coin-badge" *ngIf="activeTab === 'market'" aria-label="Монеты">
+      <img src="/icons/coin.png" alt="" aria-hidden="true">
+      <span>
+        <small>Монеты</small>
+        <strong>{{ game.player.coins }}</strong>
+      </span>
+    </div>
+  </header>
+
+  <div class="alerts">
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div class="toast-layer" *ngIf="infoMessage" aria-live="polite" aria-atomic="true">
+    <div class="toast-modal" [class.closing]="infoMessageClosing">
+      {{ infoMessage }}
+    </div>
+  </div>
+
+  <main class="tab-content" *ngIf="state as game; else loadingState">
+    <section class="garden-panel" *ngIf="activeTab === 'garden'">
+      <div class="pot-grid">
+        <ng-container *ngFor="let slot of potSlotIndexes(game); trackBy: trackByIndex">
+          <ng-container *ngIf="isPotUnlocked(slot, game); else lockedPot">
+            <ng-container *ngIf="game.plants[slot] as plant; else emptyPot">
+              <button type="button" class="plant-pot-button" [class.needs-water]="plant.needsWater"
+                [class.wilted]="plant.status === 'wilted'" (click)="openPlantDetails(plant)" [disabled]="isBusy()">
+                <span class="pot-status">{{ potStatusLabel(plant) }}</span>
+                <span class="pot-plant-visual" [style.color]="plant.species.color" [class.stage-seed]="plant.stage === 'seed'"
+                  [class.stage-sprout]="plant.stage === 'sprout'" [class.stage-bud]="plant.stage === 'bud'"
+                  [class.stage-bloom]="plant.stage === 'bloom'" [class.stage-wilted]="plant.stage === 'wilted'"
+                  aria-hidden="true">
+                  <img class="planted-pot-icon" src="/icons/pot.png" alt="">
+                  <span class="soil"></span>
+                  <span class="stem"></span>
+                  <span class="leaf leaf-left"></span>
+                  <span class="leaf leaf-right"></span>
+                  <span class="bud"></span>
+                  <span class="flower-head">{{ plant.species.emoji }}</span>
+                  <img class="pot-seed-art" *ngIf="plant.stage === 'seed'" [src]="seedIconUrl(plant.seedRarity)"
+                    [alt]="plant.species.name">
+                </span>
+                <span class="pot-card-copy">
+                  <strong>Горшок {{ slot + 1 }}</strong>
+                  <small>{{ plant.species.name }}</small>
+                </span>
+              </button>
+            </ng-container>
+
+            <ng-template #emptyPot>
+              <button type="button" class="empty-pot-button" (click)="openPlantingForm()" [disabled]="isBusy()"
+                aria-label="Выбрать семечко для посадки">
+                <span class="pot-status available">Свободен</span>
+                <span class="pot-visual empty" aria-hidden="true">
+                  <img class="pot-icon" src="/icons/pot.png" alt="">
+                  <span class="pot-shadow"></span>
+                  <span class="empty-plus">+</span>
+                </span>
+                <span class="pot-card-copy">
+                  <strong>Горшок {{ slot + 1 }}</strong>
+                  <small>{{ seedInventory.length > 0 ? 'Нажми, чтобы выбрать семечко' : 'Семян пока нет' }}</small>
+                </span>
+              </button>
+            </ng-template>
+          </ng-container>
+
+          <ng-template #lockedPot>
+            <button type="button" class="locked-pot-button" (click)="buyPotSlot()"
+              [disabled]="!isNextPotForSale(slot, game) || isBusy() || game.player.coins < (game.player.nextPotPrice || 0)">
+              <span class="pot-status locked">Закрыт</span>
+              <span class="pot-visual locked" aria-hidden="true">
+                <img class="pot-icon" src="/icons/pot.png" alt="">
+                <span class="pot-shadow"></span>
+              </span>
+              <span class="pot-card-copy">
+                <strong>Горшок {{ slot + 1 }}</strong>
+                <small>{{ potPrice(slot) }} монет</small>
+              </span>
+              <span class="pot-lock" *ngIf="isNextPotForSale(slot, game) && game.player.coins < (game.player.nextPotPrice || 0)">
+                Недостаточно монет
+              </span>
+              <span class="pot-lock" *ngIf="!isNextPotForSale(slot, game)">
+                Сначала купи предыдущий
+              </span>
+            </button>
+          </ng-template>
+        </ng-container>
+      </div>
+    </section>
+
+    <div class="seed-modal-backdrop" *ngIf="plantingFormOpen && game.plants.length < game.player.potSlots">
+      <section class="seed-modal" role="dialog" aria-modal="true" aria-labelledby="seed-modal-title"
+        (click)="$event.stopPropagation()">
+        <div class="seed-picker-head">
+          <strong id="seed-modal-title">Выбери семечко</strong>
+          <button type="button" class="ghost" (click)="closePlantingForm()" [disabled]="isBusy()">Закрыть</button>
+        </div>
+
+        <div class="seed-list" *ngIf="seedInventory.length > 0; else noSeeds">
+          <button type="button" class="seed-option" *ngFor="let seed of seedInventory"
+            (click)="plantSeed(seed.rarity)" [disabled]="isBusy()">
+            <span class="seed-icon">
+              <img [src]="seedIconUrl(seed.rarity)" [alt]="seed.label" loading="lazy">
+            </span>
+            <span>
+              <strong>{{ seed.label }}</strong>
+              <small>{{ seed.quantity }} шт.</small>
+            </span>
+          </button>
+        </div>
+
+        <ng-template #noSeeds>
+          <p class="seed-empty">Семян нет. Получи недельный бонус или купи семена на рынке.</p>
+        </ng-template>
+      </section>
+    </div>
+
+    <div class="plant-modal-backdrop" *ngIf="selectedPlant as plant">
+      <section class="plant-modal" role="dialog" aria-modal="true" aria-label="Информация о цветке"
+        (click)="$event.stopPropagation()">
+        <div class="plant-modal-head">
+          <strong>Информация</strong>
+          <button type="button" class="ghost" (click)="closePlantDetails()" [disabled]="isBusy()">Закрыть</button>
+        </div>
+
+        <app-plant-card [plant]="plant" [busy]="isBusy()" (water)="waterPlant($event)"
+          (listForSale)="listPlantForSale($event)" (compost)="compostPlant($event)">
+        </app-plant-card>
+      </section>
+    </div>
+
+    <section class="market-tab" *ngIf="activeTab === 'market'">
+      <app-market [listings]="game.market" [player]="game.player" [busy]="isBusy()" (buy)="buyListing($event)"
+        (cancel)="cancelListing($event)">
+      </app-market>
+
+      <app-inventory [inventory]="game.inventory" [busy]="isBusy()" (createListing)="createListing($event)">
+      </app-inventory>
+    </section>
+
+    <app-profile *ngIf="activeTab === 'profile'" [state]="game" [busy]="isBusy()" (saveName)="saveName($event)"
+      (claimDaily)="claimDaily()">
+    </app-profile>
+  </main>
+
+  <nav class="bottom-bar" *ngIf="state" aria-label="Главная навигация">
+    <button type="button" [class.active]="isActiveTab('profile')" (click)="setActiveTab('profile')">
+      <span class="nav-glyph">
+        <img class="nav-icon" src="/icons/profile.png" alt="" aria-hidden="true">
+      </span>
+      <span>Профиль</span>
+    </button>
+    <button type="button" [class.active]="isActiveTab('market')" (click)="setActiveTab('market')">
+      <span class="nav-glyph">
+        <img class="nav-icon" src="/icons/market.png" alt="" aria-hidden="true">
+      </span>
+      <span>Рынок</span>
+    </button>
+    <button type="button" [class.active]="isActiveTab('garden')" (click)="setActiveTab('garden')">
+      <span class="nav-glyph">
+        <img class="nav-icon" src="/icons/garden.png" alt="" aria-hidden="true">
+      </span>
+      <span>Сад</span>
+    </button>
+  </nav>
+
+  <ng-template #loadingState>
+    <div class="loading">
+      <strong>Загружаю сад...</strong>
+      <span>Backend должен быть запущен на localhost:3000.</span>
+    </div>
+  </ng-template>
+</section>
+  

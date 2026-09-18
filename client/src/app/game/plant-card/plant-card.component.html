@@ -1,0 +1,76 @@
+<article class="plant-card" [class.needs-water]="plant.needsWater" [class.wilted]="plant.status === 'wilted'">
+  <div class="plant-visual" [style.color]="plant.species.color" [class.stage-seed]="plant.stage === 'seed'"
+    [class.stage-sprout]="plant.stage === 'sprout'" [class.stage-bud]="plant.stage === 'bud'"
+    [class.stage-bloom]="plant.stage === 'bloom'" [class.stage-wilted]="plant.stage === 'wilted'">
+    <img class="planted-pot-icon" src="/icons/pot.png" alt="">
+    <div class="soil"></div>
+    <div class="stem"></div>
+    <div class="leaf leaf-left"></div>
+    <div class="leaf leaf-right"></div>
+    <div class="bud"></div>
+    <img class="seed-art" *ngIf="plant.stage === 'seed'" [src]="seedIconUrl(plant.seedRarity)"
+      [alt]="plant.species.name">
+    <div class="flower-head">
+      <span>{{ plant.species.emoji }}</span>
+    </div>
+  </div>
+
+  <div class="plant-info">
+    <div class="plant-title">
+      <div>
+        <span class="status">{{ statusLabel }}</span>
+        <h3>{{ plant.species.name }}</h3>
+      </div>
+      <span class="rarity" [ngClass]="plant.species.rarity">{{ rarityLabel(plant.species.rarity) }}</span>
+    </div>
+
+    <p>{{ plant.species.description }}</p>
+
+    <div class="meters">
+      <div class="meter-row countdown-row">
+        <span>До цветения</span>
+        <strong>{{ matureCountdownText }}</strong>
+      </div>
+
+      <div class="meter-row">
+        <span>Влага</span>
+        <strong>{{ plant.waterLevel }}%</strong>
+      </div>
+      <div class="meter water">
+        <span [style.width.%]="plant.waterLevel"></span>
+      </div>
+
+      <div class="meter-row">
+        <span>Здоровье</span>
+        <strong>{{ plant.health }}%</strong>
+      </div>
+      <div class="meter health">
+        <span [style.width.%]="plant.health"></span>
+      </div>
+    </div>
+
+    <div class="timers">
+      <span *ngIf="plant.status !== 'wilted'">До полива: {{ plant.timeToWaterMinutes }} мин</span>
+      <span *ngIf="plant.status === 'wilted'">Горшок занят завядшим растением</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" (click)="water.emit(plant.id)" [disabled]="busy || plant.status === 'wilted'">
+      Полить
+    </button>
+    <div class="sell-plant" *ngIf="canSellNow">
+      <label>
+        <span>Цена</span>
+        <input type="number" min="1" max="99999" [(ngModel)]="salePrice" [disabled]="busy" aria-label="Цена цветка">
+      </label>
+      <button type="button" class="primary" (click)="sellPlant()" [disabled]="busy">
+        На рынок
+      </button>
+    </div>
+    <button type="button" class="danger" *ngIf="plant.status === 'wilted'" (click)="compost.emit(plant.id)"
+      [disabled]="busy">
+      Убрать
+    </button>
+  </div>
+</article>

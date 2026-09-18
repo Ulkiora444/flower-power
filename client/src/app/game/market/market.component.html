@@ -1,0 +1,72 @@
+<section class="panel">
+  <div class="section-heading">
+    <div>
+      <span>Рынок</span>
+      <h2>Лоты игроков</h2>
+    </div>
+  </div>
+
+  <div class="market-filters">
+    <label class="search-field">
+      Поиск
+      <input type="search" [(ngModel)]="searchTerm" placeholder="Название цветка или продавец">
+    </label>
+
+    <div class="rarity-filter" aria-label="Фильтр по редкости">
+      <button type="button" *ngFor="let option of rarityOptions" [class.active]="selectedRarity === option.value"
+        (click)="setRarityFilter(option.value)">
+        {{ option.label }}
+      </button>
+    </div>
+  </div>
+
+  <div class="listing-list" *ngIf="listings.length > 0; else emptyMarket">
+    <article class="listing" *ngFor="let listing of filteredListings; trackBy: trackByListingId"
+      [class.own]="isOwnListing(listing)">
+      <div class="listing-main">
+        <span class="item-icon" [class.seed-item-icon]="listing.kind === 'seed'"
+          [style.color]="listing.kind === 'flower' ? listing.species.color : null">
+          <img *ngIf="listing.kind === 'seed'; else flowerListingIcon"
+            [src]="seedIconUrl(listingRarity(listing))" [alt]="listing.species.name" loading="lazy">
+          <ng-template #flowerListingIcon>{{ listing.species.emoji }}</ng-template>
+        </span>
+        <div>
+          <div class="listing-title">
+            <strong>{{ listing.species.name }}</strong>
+            <span>{{ kindLabel(listing.kind) }}</span>
+            <span class="rarity" [ngClass]="listingRarity(listing)">{{ rarityLabel(listingRarity(listing)) }}</span>
+          </div>
+          <small>Продавец: {{ listing.seller.name }} · Осталось: {{ listing.quantity }}</small>
+        </div>
+      </div>
+
+      <div class="price">
+        <strong>{{ listing.pricePerItem }}</strong>
+        <span>монет/шт.</span>
+      </div>
+
+      <div class="buy-controls" *ngIf="!isOwnListing(listing); else ownListing">
+        <input #buyQty type="number" min="1" [max]="listing.quantity" value="1" aria-label="Количество для покупки">
+        <button type="button" (click)="emitBuy(listing, buyQty.value)"
+          [disabled]="busy || player.coins < listing.pricePerItem">
+          Купить
+        </button>
+      </div>
+
+      <ng-template #ownListing>
+        <button type="button" class="secondary" (click)="cancel.emit(listing.id)" [disabled]="busy">
+          Снять лот
+        </button>
+      </ng-template>
+    </article>
+
+    <div class="empty filtered-empty" *ngIf="filteredListings.length === 0">
+      <p>По таким фильтрам лотов нет.</p>
+      <button type="button" *ngIf="hasActiveFilters" (click)="clearFilters()">Сбросить фильтры</button>
+    </div>
+  </div>
+
+  <ng-template #emptyMarket>
+    <p class="empty">Активных лотов пока нет. Выставьте семена или выращенные цветы, чтобы запустить торговлю.</p>
+  </ng-template>
+</section>

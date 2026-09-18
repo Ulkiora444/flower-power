@@ -1,0 +1,982 @@
+.game-shell {
+  --theme-bg-image: url('/theme/laptop.png');
+
+  min-height: 100vh;
+  padding: 24px 24px 150px;
+  background:
+    linear-gradient(180deg, rgba(27, 8, 40, 0.14), rgba(27, 8, 40, 0.48)),
+    var(--theme-bg-image),
+    var(--page);
+  background-attachment: fixed;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  max-width: 1240px;
+  margin: 0 auto 12px;
+}
+
+.brand span,
+.section-heading span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input,
+select,
+button {
+  min-height: 42px;
+  border-radius: 8px;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--text);
+  padding: 0 12px;
+}
+
+button {
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+button.primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: #ffffff;
+}
+
+button.ghost {
+  border-color: rgba(33, 201, 107, 0.58);
+  background: rgba(33, 201, 107, 0.1);
+  color: var(--text);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.coin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(82, 23, 71, 0.88);
+  text-align: right;
+  box-shadow: 0 14px 34px rgba(255, 45, 180, 0.24);
+}
+
+.coin-badge img {
+  width: 40px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.24));
+}
+
+.coin-badge span {
+  display: grid;
+  gap: 2px;
+}
+
+.coin-badge small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.coin-badge strong {
+  color: var(--pink);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.alerts,
+.tab-content,
+.loading {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.error {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+.error {
+  border: 1px solid rgba(255, 92, 147, 0.46);
+  background: rgba(255, 92, 147, 0.14);
+  color: #ffd6e5;
+}
+
+.toast-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: start center;
+  padding: 18px;
+  pointer-events: none;
+}
+
+.toast-modal {
+  margin-top: 12px;
+  width: min(380px, 100%);
+  padding: 16px 18px;
+  border: 1px solid rgba(33, 201, 107, 0.52);
+  border-radius: 8px;
+  background: rgba(82, 23, 71, 0.96);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(255, 45, 180, 0.3);
+  animation: toast-slide-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.toast-modal.closing {
+  animation: toast-slide-out 260ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-36px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-36px) scale(0.98);
+  }
+}
+
+.garden-panel {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(16px, 2vw, 24px);
+  border: 1px solid rgba(255, 45, 180, 0.34);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 45, 180, 0.14), rgba(33, 201, 107, 0.08)),
+    rgba(70, 19, 62, 0.86);
+  margin-bottom: 24px;
+  box-shadow: 0 18px 44px rgba(255, 45, 180, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.garden-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 78%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 78%);
+  pointer-events: none;
+}
+
+.pot-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 18px);
+  width: 100%;
+}
+
+.empty-pot-button,
+.locked-pot-button,
+.plant-pot-button {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: clamp(300px, 31vw, 370px);
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid rgba(255, 45, 180, 0.36);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 45, 180, 0.2), transparent 36%),
+    linear-gradient(180deg, rgba(255, 45, 180, 0.11), rgba(33, 201, 107, 0.05)),
+    rgba(82, 23, 71, 0.68);
+  color: var(--text);
+  text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 16px 36px rgba(10, 0, 18, 0.24);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.locked-pot-button {
+  grid-template-rows: minmax(0, 1fr) auto auto;
+}
+
+.empty-pot-button::before,
+.locked-pot-button::before,
+.plant-pot-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(33, 201, 107, 0.16), transparent 42%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.empty-pot-button:hover:not(:disabled),
+.locked-pot-button:hover:not(:disabled),
+.plant-pot-button:hover:not(:disabled) {
+  border-color: rgba(33, 201, 107, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 20px 44px rgba(33, 201, 107, 0.13),
+    0 18px 38px rgba(255, 45, 180, 0.18);
+  transform: translateY(-3px);
+  background:
+    radial-gradient(circle at 50% 24%, rgba(33, 201, 107, 0.19), transparent 38%),
+    linear-gradient(180deg, rgba(255, 45, 180, 0.15), rgba(33, 201, 107, 0.09)),
+    rgba(82, 23, 71, 0.82);
+}
+
+.locked-pot-button {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 45, 180, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(255, 45, 180, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(53, 16, 47, 0.72);
+}
+
+.plant-pot-button {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(33, 201, 107, 0.17), transparent 38%),
+    linear-gradient(180deg, rgba(255, 45, 180, 0.12), rgba(33, 201, 107, 0.07)),
+    rgba(82, 23, 71, 0.72);
+}
+
+.plant-pot-button.needs-water {
+  border-color: rgba(251, 191, 36, 0.62);
+}
+
+.plant-pot-button.wilted {
+  border-color: rgba(255, 92, 147, 0.62);
+}
+
+.empty-pot-button strong,
+.locked-pot-button strong,
+.plant-pot-button strong {
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.1;
+}
+
+.empty-pot-button small,
+.locked-pot-button small,
+.plant-pot-button small,
+.pot-lock {
+  color: var(--muted);
+}
+
+.pot-lock {
+  font-size: 12px;
+}
+
+.pot-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: inline-grid;
+  min-height: 28px;
+  place-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(33, 201, 107, 0.5);
+  border-radius: 999px;
+  background: rgba(33, 201, 107, 0.14);
+  color: #c8ffd9;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.plant-pot-button.needs-water .pot-status {
+  border-color: rgba(251, 191, 36, 0.54);
+  background: rgba(251, 191, 36, 0.14);
+  color: #ffe9a3;
+}
+
+.plant-pot-button.wilted .pot-status {
+  border-color: rgba(255, 92, 147, 0.56);
+  background: rgba(255, 92, 147, 0.14);
+  color: #ffd6e5;
+}
+
+.pot-status.locked {
+  border-color: rgba(216, 201, 223, 0.24);
+  background: rgba(216, 201, 223, 0.08);
+  color: var(--muted);
+}
+
+.pot-status.available {
+  border-color: rgba(255, 45, 180, 0.48);
+  background: rgba(255, 45, 180, 0.13);
+  color: #ffd6f2;
+}
+
+.pot-card-copy {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 45, 180, 0.24);
+  border-radius: 8px;
+  background: rgba(53, 16, 47, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px rgba(10, 0, 18, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.pot-card-copy strong {
+  color: var(--text);
+}
+
+.pot-card-copy small {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.pot-visual {
+  position: relative;
+  display: grid;
+  align-self: center;
+  place-items: center;
+  width: min(100%, 236px);
+  height: 228px;
+  margin-top: 0;
+}
+
+.pot-shadow {
+  position: absolute;
+  display: block;
+}
+
+.pot-visual.locked {
+  opacity: 0.56;
+  filter: grayscale(0.35);
+}
+
+.pot-visual.empty {
+  transform: translateY(4px);
+}
+
+.pot-icon {
+  position: absolute;
+  bottom: 4px;
+  z-index: 1;
+  width: min(115px, 100%);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.28));
+}
+
+.empty-plus {
+  position: absolute;
+  left: 50%;
+  bottom: 102px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(33, 201, 107, 0.48);
+  border-radius: 999px;
+  background: rgba(33, 201, 107, 0.14);
+  color: var(--text);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(33, 201, 107, 0.12);
+  transform: translateX(-50%);
+}
+
+.pot-shadow {
+  bottom: 0;
+  width: 98px;
+  height: 29px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  filter: blur(2px);
+}
+
+.pot-plant-visual {
+  position: relative;
+  display: grid;
+  align-self: center;
+  place-items: end center;
+  width: min(100%, 236px);
+  height: 228px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 108%, rgba(33, 201, 107, 0.28), transparent 48%),
+    radial-gradient(circle at 50% 18%, rgba(255, 45, 180, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(100, 27, 89, 0.95), #35102f);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -24px 34px rgba(0, 0, 0, 0.16);
+}
+
+.pot-plant-visual .planted-pot-icon {
+  position: absolute;
+  bottom: 4px;
+  z-index: 3;
+  width: 115px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.3));
+}
+
+.pot-plant-visual .soil {
+  display: none;
+}
+
+.pot-plant-visual .soil::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: -18px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e5ad83;
+}
+
+.pot-plant-visual .stem {
+  position: absolute;
+  bottom: 118px;
+  z-index: 4;
+  width: 8px;
+  height: 84px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform-origin: bottom;
+}
+
+.pot-plant-visual .leaf,
+.pot-plant-visual .bud,
+.pot-plant-visual .flower-head {
+  position: absolute;
+  opacity: 0;
+}
+
+.pot-plant-visual .pot-seed-art {
+  position: absolute;
+  bottom: 77px;
+  z-index: 4;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.28));
+}
+
+.pot-plant-visual .leaf {
+  bottom: 154px;
+  z-index: 4;
+  width: 36px;
+  height: 18px;
+  border-radius: 100% 0 100% 0;
+  background: #6fda94;
+}
+
+.pot-plant-visual .leaf-left {
+  margin-left: -36px;
+  transform: rotate(-24deg);
+}
+
+.pot-plant-visual .leaf-right {
+  margin-left: 36px;
+  transform: scaleX(-1) rotate(-24deg);
+}
+
+.pot-plant-visual .bud {
+  bottom: 158px;
+  z-index: 4;
+  width: 28px;
+  height: 34px;
+  border-radius: 50% 50% 42% 42%;
+  background: currentColor;
+}
+
+.pot-plant-visual .flower-head {
+  bottom: 150px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #fff 0 14%, transparent 15%),
+    currentColor;
+  box-shadow:
+    0 -18px 0 -8px currentColor,
+    18px 0 0 -8px currentColor,
+    0 18px 0 -8px currentColor,
+    -18px 0 0 -8px currentColor;
+  color: var(--text);
+  font-size: 22px;
+  transform: scale(0.8);
+}
+
+.pot-plant-visual.stage-sprout .stem {
+  height: 46px;
+  opacity: 1;
+}
+
+.pot-plant-visual.stage-sprout .leaf {
+  bottom: 138px;
+  opacity: 1;
+}
+
+.pot-plant-visual.stage-bud .stem,
+.pot-plant-visual.stage-bud .leaf,
+.pot-plant-visual.stage-bud .bud,
+.pot-plant-visual.stage-bloom .stem,
+.pot-plant-visual.stage-bloom .leaf,
+.pot-plant-visual.stage-bloom .flower-head {
+  opacity: 1;
+}
+
+.pot-plant-visual.stage-wilted {
+  filter: grayscale(0.8);
+}
+
+.pot-plant-visual.stage-wilted .stem {
+  height: 66px;
+  opacity: 1;
+  transform: rotate(16deg);
+  background: #a59476;
+}
+
+.pot-plant-visual.stage-wilted .leaf {
+  opacity: 0.5;
+  background: #a59476;
+}
+
+.pot-plant-visual.stage-wilted .bud {
+  opacity: 1;
+  transform: rotate(34deg);
+  background: #a59476;
+}
+
+.seed-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(17, 0, 25, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.plant-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(17, 0, 25, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.plant-modal {
+  display: grid;
+  gap: 12px;
+  width: min(760px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 24px 70px rgba(255, 45, 180, 0.26);
+}
+
+.plant-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.seed-modal {
+  width: min(520px, 100%);
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 24px 70px rgba(255, 45, 180, 0.26);
+}
+
+.seed-picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.seed-list {
+  display: grid;
+  gap: 8px;
+}
+
+.seed-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 58px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  text-align: left;
+}
+
+.seed-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.16), transparent 54%), #6c1f5d;
+  font-size: 20px;
+}
+
+.seed-icon img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.28));
+}
+
+.seed-option strong,
+.seed-option small {
+  display: block;
+}
+
+.seed-option small,
+.seed-empty {
+  color: var(--muted);
+}
+
+.seed-empty {
+  line-height: 1.45;
+}
+
+.market-tab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
+  gap: 18px;
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  padding: 24px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.loading strong {
+  color: var(--text);
+  font-size: 24px;
+}
+
+.loading span {
+  max-width: 380px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  width: min(620px, calc(100vw - 12px));
+  padding: 34px 56px 20px;
+  border: 0;
+  border-radius: 0;
+  background: url('/blocks/tabs_block.png') center / 100% 100% no-repeat;
+  transform: translateX(-50%);
+}
+
+.bottom-bar button {
+  display: grid;
+  place-items: center;
+  gap: 0px;
+  min-height: 70px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 8px 10px;
+}
+
+.bottom-bar button.active {
+  background: radial-gradient(circle at 50% 52%, rgba(221, 55, 255, 0.3), transparent 150%);
+  color: var(--text);
+}
+
+.nav-glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+}
+
+.nav-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.72;
+  filter: saturate(0.82) brightness(0.88);
+  transition:
+    opacity 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.bottom-bar button.active .nav-icon {
+  opacity: 1;
+  filter: drop-shadow(0 8px 10px rgba(33, 201, 107, 0.28));
+  transform: translateY(-1px);
+}
+
+@media (max-width: 980px) {
+  .game-shell {
+    --theme-bg-image: url('/theme/tablet.png');
+
+    background-attachment: scroll;
+  }
+
+  .pot-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .market-tab {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-shell {
+    --theme-bg-image: url('/theme/phone.png');
+
+    background-position: center top;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-shell {
+    padding: 14px 14px 140px;
+  }
+
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .topbar {
+    gap: 12px;
+  }
+
+  .coin-badge {
+    padding: 7px 10px;
+  }
+
+  .coin-badge img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .pot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .empty-pot-button,
+  .locked-pot-button,
+  .plant-pot-button {
+    min-height: 280px;
+    padding: 22px;
+  }
+
+  .pot-visual {
+    width: clamp(168px, 58vw, 220px);
+    height: clamp(178px, 58vw, 220px);
+    margin-top: 0;
+  }
+
+  .pot-shadow {
+    width: 116px;
+  }
+
+  .pot-plant-visual {
+    width: clamp(168px, 58vw, 220px);
+    height: clamp(178px, 58vw, 220px);
+  }
+
+  .bottom-bar {
+    bottom: 10px;
+    padding: 28px 36px 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .garden-panel {
+    padding: 14px;
+  }
+
+  .plant-pot-button {
+    padding: 14px;
+  }
+
+  .bottom-bar {
+    padding: 24px 26px 14px;
+  }
+
+  .pot-plant-visual {
+    width: min(100%, 176px);
+    height: 178px;
+  }
+
+  .pot-plant-visual .planted-pot-icon {
+    bottom: 2px;
+    width: 115px;
+    height: auto;
+  }
+
+  .pot-plant-visual .stem {
+    bottom: 104px;
+    height: 74px;
+  }
+
+  .pot-plant-visual .leaf {
+    bottom: 138px;
+  }
+
+  .pot-plant-visual .bud {
+    bottom: 142px;
+  }
+
+  .pot-plant-visual .flower-head {
+    bottom: 134px;
+    width: 64px;
+    height: 64px;
+    font-size: 20px;
+  }
+
+  .pot-plant-visual .pot-seed-art {
+    bottom: 77px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .pot-plant-visual.stage-sprout .leaf {
+    bottom: 122px;
+  }
+
+  .empty-pot-button strong,
+  .locked-pot-button strong,
+  .plant-pot-button strong {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-shell,
+  .toast-modal,
+  .toast-modal.closing {
+    animation: none;
+  }
+}

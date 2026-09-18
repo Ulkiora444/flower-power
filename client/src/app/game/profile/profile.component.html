@@ -1,0 +1,146 @@
+<section class="profile-panel">
+  <div class="profile-hero">
+    <section class="profile-card">
+      <div class="profile-avatar" aria-hidden="true">
+        <img src="/icons/profile.png" alt="">
+      </div>
+
+      <div class="profile-name-view">
+        <span>Игрок</span>
+        <strong>{{ state.player.name }}</strong>
+        <small>Имя можно сменить за {{ state.player.renameCost }} монет</small>
+      </div>
+
+      <div class="rename-action">
+        <button type="button" (click)="openRenameDialog()" [disabled]="!canOpenRenameDialog">
+          Сменить
+        </button>
+      </div>
+    </section>
+
+    <section class="daily-card">
+      <div class="daily-icon" aria-hidden="true">
+        <img src="/icons/weekly_bonus.png" alt="">
+      </div>
+
+      <div>
+        <span>Еженедельный бонус</span>
+        <strong>{{ nextDailyText }}</strong>
+        <small>10 монет или 1 случайное семечко</small>
+      </div>
+
+      <div class="bonus-actions">
+        <button type="button" (click)="claimDaily.emit()" [disabled]="!canClaimWeeklyBonus">
+          Забрать
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="profile-stats">
+    <div class="stat">
+      <span>Монеты</span>
+      <strong>{{ state.player.coins }}</strong>
+    </div>
+    <div class="stat">
+      <span>Семена</span>
+      <strong>{{ totalSeeds }}</strong>
+    </div>
+    <div class="stat">
+      <span>Цветы</span>
+      <strong>{{ totalFlowers }}</strong>
+    </div>
+    <div class="stat">
+      <span>Лоты</span>
+      <strong>{{ activeListings }}</strong>
+    </div>
+  </div>
+
+  <section class="inventory-card">
+    <div class="inventory-head">
+      <div>
+        <span>Коллекция</span>
+        <h3>Инвентарь</h3>
+      </div>
+      <div class="inventory-side">
+        <div class="inventory-summary" aria-label="Сводка инвентаря">
+          <span class="summary-pill">
+            <img src="/seeds/%D0%9D%D0%B5%D0%B8%D0%B7%D0%B2%D0%B5%D1%81%D1%82%D0%BD%D0%BE%D0%B5.png" alt="">
+            <strong>{{ totalSeeds }}</strong>
+            <small>семян</small>
+          </span>
+          <span class="summary-pill">
+            <span class="summary-flower" aria-hidden="true">✦</span>
+            <strong>{{ totalFlowers }}</strong>
+            <small>цветов</small>
+          </span>
+        </div>
+
+        <div class="view-toggle" aria-label="Вид инвентаря">
+          <button type="button" [class.active]="inventoryViewMode === 'rows'"
+            (click)="setInventoryViewMode('rows')">
+            Строки
+          </button>
+          <button type="button" [class.active]="inventoryViewMode === 'blocks'"
+            (click)="setInventoryViewMode('blocks')">
+            Блоки
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="collection-grid" [class.block-view]="inventoryViewMode === 'blocks'">
+      <section class="collection">
+        <h4>Семена</h4>
+        <article class="collection-row" *ngFor="let item of state.inventory.seeds; trackBy: trackBySeedRarity">
+          <span class="item-icon seed-item-icon">
+            <img [src]="seedIconUrl(item.rarity)" [alt]="item.label" loading="lazy">
+          </span>
+          <div>
+            <strong>{{ item.label }}</strong>
+            <small>{{ item.quantity }} шт.</small>
+          </div>
+        </article>
+        <p class="empty" *ngIf="state.inventory.seeds.length === 0">Семян нет.</p>
+      </section>
+
+      <section class="collection">
+        <h4>Цветы</h4>
+        <article class="collection-row" *ngFor="let item of state.inventory.flowers; trackBy: trackBySpeciesId">
+          <span class="item-icon" [style.color]="item.species.color">{{ item.species.emoji }}</span>
+          <div>
+            <strong>{{ item.species.name }}</strong>
+            <small>{{ item.quantity }} шт.</small>
+          </div>
+        </article>
+        <p class="empty" *ngIf="state.inventory.flowers.length === 0">Купленных цветов пока нет.</p>
+      </section>
+    </div>
+  </section>
+
+  <div class="rename-modal-backdrop" *ngIf="renameDialogOpen">
+    <section class="rename-modal" role="dialog" aria-modal="true" aria-labelledby="rename-modal-title"
+      (click)="$event.stopPropagation()">
+      <div class="rename-modal-head">
+        <strong id="rename-modal-title">Смена имени</strong>
+      </div>
+
+      <label>
+        Имя игрока
+        <input type="text" maxlength="24" [(ngModel)]="renameDraft" [disabled]="busy"
+          (keydown.enter)="confirmRename()">
+      </label>
+
+      <p class="rename-dialog-hint">{{ renameHint }}</p>
+
+      <div class="rename-dialog-actions">
+        <button type="button" class="ghost" (click)="closeRenameDialog()" [disabled]="busy">
+          Отмена
+        </button>
+        <button type="button" (click)="confirmRename()" [disabled]="!canRename">
+          Сменить за {{ state.player.renameCost }} монет
+        </button>
+      </div>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,387 @@
+.plant-card {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 18px;
+  min-height: 260px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 45, 180, 0.16), transparent), var(--panel);
+}
+
+.plant-card.needs-water {
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+.plant-card.wilted {
+  border-color: rgba(233, 63, 119, 0.55);
+}
+
+.plant-visual {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 210px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 110%, rgba(33, 201, 107, 0.24), transparent 48%),
+    linear-gradient(180deg, #641b59, #35102f);
+}
+
+.soil {
+  display: none;
+}
+
+.soil::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: -18px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e5ad83;
+}
+
+.stem {
+  position: absolute;
+  bottom: 108px;
+  z-index: 4;
+  width: 8px;
+  height: 84px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform-origin: bottom;
+  transition: height 180ms ease;
+}
+
+.leaf,
+.bud,
+.flower-head {
+  position: absolute;
+  opacity: 0;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.seed-art {
+  position: absolute;
+  bottom: 77px;
+  z-index: 4;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.28));
+}
+
+.planted-pot-icon {
+  position: absolute;
+  bottom: 4px;
+  z-index: 3;
+  width: 115px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.3));
+}
+
+.leaf {
+  bottom: 144px;
+  z-index: 4;
+  width: 36px;
+  height: 18px;
+  border-radius: 100% 0 100% 0;
+  background: #6fda94;
+}
+
+.leaf-left {
+  margin-left: -36px;
+  transform: rotate(-24deg);
+}
+
+.leaf-right {
+  margin-left: 36px;
+  transform: scaleX(-1) rotate(-24deg);
+}
+
+.bud {
+  bottom: 148px;
+  z-index: 4;
+  width: 28px;
+  height: 34px;
+  border-radius: 50% 50% 42% 42%;
+  background: currentColor;
+}
+
+.flower-head {
+  bottom: 140px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #fff 0 14%, transparent 15%),
+    currentColor;
+  box-shadow:
+    0 -18px 0 -8px currentColor,
+    18px 0 0 -8px currentColor,
+    0 18px 0 -8px currentColor,
+    -18px 0 0 -8px currentColor;
+  color: var(--text);
+  font-size: 22px;
+  transform: scale(0.8);
+}
+
+.stage-seed .stem,
+.stage-seed .leaf,
+.stage-seed .bud,
+.stage-seed .flower-head {
+  opacity: 0;
+}
+
+.stage-sprout .stem {
+  height: 46px;
+  opacity: 1;
+}
+
+.stage-sprout .leaf {
+  bottom: 128px;
+  opacity: 1;
+}
+
+.stage-bud .stem,
+.stage-bud .leaf,
+.stage-bud .bud,
+.stage-bloom .stem,
+.stage-bloom .leaf,
+.stage-bloom .flower-head {
+  opacity: 1;
+}
+
+.stage-wilted {
+  filter: grayscale(0.8);
+}
+
+.stage-wilted .stem {
+  height: 66px;
+  opacity: 1;
+  transform: rotate(16deg);
+  background: #a59476;
+}
+
+.stage-wilted .leaf {
+  opacity: 0.5;
+  background: #a59476;
+}
+
+.stage-wilted .bud {
+  opacity: 1;
+  transform: rotate(34deg);
+  background: #a59476;
+}
+
+.plant-info {
+  min-width: 0;
+}
+
+.plant-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status {
+  display: inline-flex;
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+h3,
+p {
+  margin: 0;
+}
+
+h3 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+p {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.rarity {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rarity.rare {
+  color: var(--accent-strong);
+}
+
+.rarity.epic {
+  color: var(--pink);
+}
+
+.rarity.ancient {
+  color: #7aae16;
+}
+
+.rarity.mysterious {
+  color: var(--danger);
+}
+
+.rarity.unknown {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 45, 180, 0.5);
+}
+
+.meters {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.meter-row,
+.timers {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.meter-row strong {
+  color: var(--text);
+}
+
+.countdown-row {
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 45, 180, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 45, 180, 0.12);
+}
+
+.countdown-row strong {
+  color: var(--accent);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #6c1f5d;
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.meter.water span {
+  background: var(--accent);
+}
+
+.meter.health span {
+  background: var(--warning);
+}
+
+.timers {
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.sell-plant {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.sell-plant label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--field);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sell-plant input {
+  width: 92px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+}
+
+button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+button.primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+button.danger {
+  border-color: rgba(233, 63, 119, 0.45);
+  color: var(--danger);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+@media (max-width: 720px) {
+  .plant-card {
+    grid-template-columns: 1fr;
+  }
+
+  .plant-visual {
+    min-height: 220px;
+  }
+}

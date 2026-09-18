@@ -1,0 +1,251 @@
+.panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.section-heading span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+h2 {
+  margin-top: 4px;
+  font-size: 22px;
+}
+
+.market-filters {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.search-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rarity-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rarity-filter button {
+  min-height: 34px;
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--muted);
+  padding: 0 10px;
+}
+
+.rarity-filter button.active {
+  border-color: rgba(33, 201, 107, 0.58);
+  background: rgba(33, 201, 107, 0.18);
+  color: var(--text);
+}
+
+.listing-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.listing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.listing.own {
+  border-color: rgba(33, 201, 107, 0.5);
+}
+
+.listing-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.item-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #6c1f5d;
+  font-size: 20px;
+}
+
+.item-icon img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.28));
+}
+
+.seed-item-icon {
+  flex-basis: 54px;
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.16), transparent 54%), #6c1f5d;
+}
+
+.seed-item-icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.listing-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.listing-title strong {
+  overflow-wrap: anywhere;
+}
+
+.listing-title span {
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.listing-title .rarity.rare {
+  color: var(--accent-strong);
+}
+
+.listing-title .rarity.epic {
+  color: var(--pink);
+}
+
+.listing-title .rarity.ancient {
+  color: #7aae16;
+}
+
+.listing-title .rarity.mysterious {
+  color: var(--danger);
+}
+
+.listing-title .rarity.unknown {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 45, 180, 0.5);
+}
+
+small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+}
+
+.price {
+  text-align: right;
+}
+
+.price strong,
+.price span {
+  display: block;
+}
+
+.price span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.buy-controls {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) auto;
+  gap: 8px;
+}
+
+input,
+button {
+  min-height: 38px;
+  border-radius: 8px;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+button {
+  border: 0;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+button.secondary {
+  grid-column: 1 / -1;
+  border: 1px solid var(--line-strong);
+  background: rgba(33, 201, 107, 0.1);
+  color: var(--text);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.empty {
+  margin-top: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.filtered-empty {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  margin-top: 0;
+}
+
+.filtered-empty button {
+  justify-self: start;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+}
+
+@media (max-width: 520px) {
+  .listing {
+    grid-template-columns: 1fr;
+  }
+
+  .price {
+    text-align: left;
+  }
+}

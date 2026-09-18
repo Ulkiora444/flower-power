@@ -1,0 +1,148 @@
+.panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.section-heading span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h2 {
+  margin-top: 4px;
+  font-size: 22px;
+}
+
+h3 {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.inventory-block {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.inventory-row {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.item-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.item-main strong,
+.item-main small {
+  display: block;
+}
+
+.item-main strong {
+  overflow-wrap: anywhere;
+}
+
+.item-main small {
+  margin-top: 2px;
+  color: var(--muted);
+}
+
+.item-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #6c1f5d;
+  font-size: 20px;
+}
+
+.item-icon img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.28));
+}
+
+.seed-item-icon {
+  flex-basis: 54px;
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.16), transparent 54%), #6c1f5d;
+}
+
+.seed-item-icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.sell-controls {
+  display: grid;
+  grid-template-columns: minmax(64px, 0.7fr) minmax(78px, 1fr) auto;
+  gap: 8px;
+}
+
+input,
+button {
+  min-height: 38px;
+  border-radius: 8px;
+}
+
+input {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+button {
+  border: 0;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.empty {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 520px) {
+  .sell-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sell-controls button {
+    grid-column: 1 / -1;
+  }
+}
